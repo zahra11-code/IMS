@@ -5,6 +5,7 @@ class Products:
         {"id": 12, "name": "hammer", "category": "tool", "price": 987, "stock": 50},
         {"id" : 13, "name": "cement", "category": "construction", "price": 1100, "stock": 20}]
         self.auth = auth  # Store the Authentication object
+        self.sale : dict[str: int] = {}
 
     def add_products(self):
         if self.auth.current_role == 'admin':  # Access current_role through auth
@@ -83,5 +84,23 @@ class Products:
             for restock in low_stock_products:
                 print(f"{restock}") 
         else:
-            print("No items need restocking!")               
-
+            print("No items need restocking!")  
+   def sale_product(self):
+    if self.auth.current_role == "user":
+        current_session_sales = {}  # Initialize a temporary dictionary
+        purchase = input("Enter the name of the Product you want to buy? ")
+        product_found = False
+        for product in self.products:
+            if purchase == product["name"]:
+                product_found = True
+                quantity = int(input(f"How many sets of {purchase} you want to buy?"))
+                if quantity <= product["stock"]:
+                    print(f"You have purchased {quantity} sets of {purchase}")
+                    product["stock"] = product["stock"] - quantity
+                    self.sale[purchase] = quantity
+                    current_session_sales[purchase] = quantity  # Add to temporary dict
+                elif quantity > product["stock"]:
+                    print(f"There are not this many items of {purchase} for sale at the moment")
+                    break
+    if not product_found:
+            print(f"There is no such item for sale at the moment!")      
