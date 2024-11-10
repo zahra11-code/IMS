@@ -39,6 +39,7 @@ if __name__ == '__main__':
                 print("Invalid choice.")
        elif auth.current_role == 'user':
             products.display_products()
+            products.sale_product()
             break
 
     elif(login_choice == "Q"):
