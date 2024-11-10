@@ -2,7 +2,7 @@ from authentication_management import Authentication
 class Products:
     def __init__(self, auth):  # Pass the Authentication object
         self.products = [{"id" : 11, "name": "brick", "category": "construction", "price": 76, "stock": 100},
-        {"id": 12, "name": "hammer", "category": "tool", "price": 987, "stock": 50},
+        {"id": 12, "name": "hammer", "category": "tool", "price": 987, "stock": 10},
         {"id" : 13, "name": "cement", "category": "construction", "price": 1100, "stock": 20}]
         self.auth = auth  # Store the Authentication object
         self.sale : dict[str: int] = {}
@@ -23,10 +23,11 @@ class Products:
             print("You do not have permission to add products.")
 
     # ... (other methods - edit_product, delete_product) ...
-    def edit_product(self, product_id):
+    def edit_product(self):
      if self.auth.current_role == 'admin':
+        edit_this_product = int(input("Enter the id of the product you want to edit: "))
         for product in self.products:
-            if product['id'] == product_id:
+            if edit_this_product == product["id"]:
                 print(f"Editing product: {product['name']}")
                 new_name = input("Enter new name (leave blank to keep current): ")
                 new_category = input("Enter new category (leave blank to keep current): ")
@@ -43,23 +44,26 @@ class Products:
                     product['stock'] = int(new_stock)
 
                 print("Product updated successfully!")
-                return
+                break
+            
 
-        print("Product not found.")
+        if edit_this_product not in self.products :
+                print("Product not found.")
      else:
         print("You do not have permission to edit products.")
 
-    def delete_product(self, product_id):
+    def delete_product(self):
      if self.auth.current_role == 'admin':
-        for i, product in enumerate(self.products):
-            if product['id'] == product_id:
-                del self.products[i]
-                print("Product deleted successfully!")
-                return
+        delete_this_product = int(input("Enter the id of the product you want to delete: "))
+        for product in self.products:
+            if delete_this_product == product["id"]:
+                print(f"{product['name']} is successfully been deleted!")
+                del product
+                break  # Exit the loop after deleting the product
+        else:
+            print("No such item exists!")    
 
-        print("Product not found.")
-     else:
-        print("You do not have permission to delete products.")
+
 
 
     def display_products(self):
@@ -74,6 +78,8 @@ class Products:
             for product in self.products:
                 print(f"Name: {product['name']}, Category: {product['category']}, Price: {product['price']}")
 
+    
+
     def restock_products(self):
         low_stock_products = []
         for product in self.products:
@@ -84,7 +90,10 @@ class Products:
             for restock in low_stock_products:
                 print(f"{restock}") 
         else:
-            print("No items need restocking!")  
+            print("No items need restocking!")    
+
+            
+
     def sale_product(self):
      if self.auth.current_role == "user":
         current_session_sales = {}  # Initialize a temporary dictionary
@@ -93,7 +102,7 @@ class Products:
         for product in self.products:
             if purchase == product["name"]:
                 product_found = True
-                quantity = int(input(f"How many sets of {purchase} you want to buy?"))
+                quantity = int(input(f"How many sets of {purchase} you want to buy? "))
                 if quantity <= product["stock"]:
                     print(f"You have purchased {quantity} sets of {purchase}")
                     product["stock"] = product["stock"] - quantity

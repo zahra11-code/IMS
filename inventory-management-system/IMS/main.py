@@ -6,7 +6,7 @@ from products import Products
 if __name__ == '__main__':
     auth = Authentication()
     auth.signup()
-    login_choice = input("Would you like to login? If yes type 'y' and if no type 'q for quit'!").upper()
+    login_choice = input("Would you like to login? If yes type 'y' and if no type 'q for quit'! ").upper()
     if login_choice == "Y":
      auth.login()
 
@@ -24,15 +24,13 @@ if __name__ == '__main__':
             if choice == '1':
                 products.add_products()
             elif choice == '2':
-                product_id = input("Enter product ID to edit: ")
-                products.edit_product(product_id)
+                products.edit_product()
             elif choice == '3':
-                product_id = input("Enter product ID to delete: ")
-                products.delete_product(product_id)
+                products.delete_product()
             elif choice == '4':
                 products.display_products()
             elif choice == '5':
-                products.restock_products
+                products.restock_products()
             elif choice == '6':
                 break
             else:
