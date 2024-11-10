@@ -85,8 +85,8 @@ class Products:
                 print(f"{restock}") 
         else:
             print("No items need restocking!")  
-   def sale_product(self):
-    if self.auth.current_role == "user":
+    def sale_product(self):
+     if self.auth.current_role == "user":
         current_session_sales = {}  # Initialize a temporary dictionary
         purchase = input("Enter the name of the Product you want to buy? ")
         product_found = False
@@ -102,5 +102,5 @@ class Products:
                 elif quantity > product["stock"]:
                     print(f"There are not this many items of {purchase} for sale at the moment")
                     break
-    if not product_found:
+        if not product_found:
             print(f"There is no such item for sale at the moment!")      
